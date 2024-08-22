@@ -1,0 +1,19 @@
+#!/bin/bash
+
+SSH_DIR="$HOME/.ssh"
+
+# check if the first argument is a file
+if [ -f "$1" ]; then
+    key_path="$SSH_DIR/$key_path"
+elif [ -f "$SSH_DIR/$1" ]; then
+    key_path="$SSH_DIR/$1"
+elif [ -f "$SSH_DIR/id_rsa_$1" ]; then
+    key_path="$SSH_DIR/id_rsa_$1"
+else
+    echo "The specified key file $1 does not exist"
+    exit 1
+fi
+git_args="${@:2}"
+
+#echo "ssh-agent bash -c \"ssh-add $key_path; git $git_args\""
+ssh-agent bash -c "ssh-add $key_path; git $git_args"
